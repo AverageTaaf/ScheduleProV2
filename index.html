@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>TaskSchedule Pro — Modern Redesign</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>TaskSchedule Pro</h1>
+      <div class="controls">
+        <select id="defaultView">
+          <option value="list">List View</option>
+          <option value="calendar">Calendar</option>
+          <option value="stats">Statistics</option>
+        </select>
+        <select id="sortMode">
+          <option value="smart">Smart Sort</option>
+          <option value="due">Due Date</option>
+          <option value="created">Created</option>
+        </select>
+        <input id="searchInput" placeholder="Search tasks or tags..." />
+        <select id="filterTag">
+          <option value="">All tags</option>
+        </select>
+        <button id="toggleTheme" class="icon">🌓</button>
+        <button id="exportJSON" class="secondary">Export</button>
+        <button id="importJSONBtn" class="secondary">Import</button>
+        <input
+          id="importJSON"
+          type="file"
+          accept=".json"
+          style="display: none"
+        />
+        <div
+          id="authArea"
+          style="display: flex; align-items: center; gap: 8px; margin-left: 8px"
+        >
+          <button id="authBtn" class="secondary">Sign in</button>
+          <div id="userInfo" style="font-size: 12px; color: var(--muted)"></div>
+          <div
+            id="syncStatus"
+            style="font-size: 12px; color: var(--muted)"
+          ></div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="left">
+        <form id="taskForm">
+          <h2 id="formTitle">Add New Task</h2>
+          <input id="taskTitle" placeholder="Task title" required />
+          <textarea
+            id="taskNotes"
+            placeholder="Notes (optional)"
+            rows="3"
+          ></textarea>
+
+          <div class="row">
+            <input id="dueDate" type="date" />
+            <input id="dueTime" type="time" />
+          </div>
+
+          <div class="row">
+            <input id="tagInput" placeholder="Add tag (comma or press Enter)" />
+            <select id="recurrence">
+              <option value="">No recurrence</option>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+            </select>
+          </div>
+
+          <div id="checkpointsWrap">
+            <h4>Checkpoints</h4>
+            <div id="checkpoints"></div>
+            <input
+              id="newCheckpoint"
+              placeholder="New checkpoint and press Enter"
+            />
+          </div>
+
+          <div class="row">
+            <button id="saveTask" type="submit" class="primary">
+              Save Task
+            </button>
+            <button id="resetForm" type="button" class="secondary">
+              Reset
+            </button>
+          </div>
+        </form>
+
+        <section class="archived">
+          <h3>Archive</h3>
+          <ul id="archiveList"></ul>
+        </section>
+      </section>
+
+      <section class="right">
+        <div id="viewContainer">
+          <div id="listView">
+            <h2>Your Tasks</h2>
+            <div id="taskList"></div>
+          </div>
+
+          <div id="calendarView" style="display: none">
+            <h2>Calendar</h2>
+            <div id="calendarControls" class="row">
+              <button id="prevMonth" class="icon">◀</button>
+              <div id="monthLabel"></div>
+              <button id="nextMonth" class="icon">▶</button>
+            </div>
+            <div id="calendar"></div>
+            <div id="dayTasks"></div>
+          </div>
+
+          <div id="statsView" style="display: none">
+            <h2>Statistics</h2>
+            <canvas id="tasksChart" width="600" height="200"></canvas>
+            <div id="statsSummary"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="onboard" class="onboard" style="display: none">
+      <div class="onboard-inner">
+        <h3>Welcome to TaskSchedule Pro</h3>
+        <p>
+          Quick tips: Use checklists for subtasks, set recurrence for repeating
+          tasks, and try the Calendar view. Your tasks sync across devices when
+          signed in.
+        </p>
+        <label
+          ><input type="checkbox" id="dontShowOnboard" /> Don't show
+          again</label
+        >
+        <div style="margin-top: 16px; display: flex; justify-content: flex-end">
+          <button id="closeOnboard" class="primary">Got it</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <small
+        >TaskSchedule Pro — Modern Redesign • Your productive task management
+        solution</small
+      >
+    </footer>
+
+    <!-- Firebase SDKs (client-side). Replace the firebaseConfig placeholder below with your Firebase config. -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+
+    <script>
+      window.firebaseConfig = {
+        apiKey: "AIzaSyA-KsOZhIGr7xCBExOBOmDUQmVL9neWJ2Y",
+        authDomain: "taskschedule-pro.firebaseapp.com",
+        databaseURL: "https://taskschedule-pro-default-rtdb.firebaseio.com",
+        projectId: "taskschedule-pro",
+        storageBucket: "taskschedule-pro.firebasestorage.app",
+        messagingSenderId: "786531666672",
+        appId: "1:786531666672:web:debae6aaa19dcf4f2b5035",
+        measurementId: "G-MDS6Y5FMGT",
+      };
+      if (
+        firebaseConfig.apiKey &&
+        firebaseConfig.apiKey !== "AIzaSyA-KsOZhIGr7xCBExOBOmDUQmVL9neWJ2Y"
+      ) {
+        firebase.initializeApp(firebaseConfig);
+      }
+    </script>
+
+    <script src="script.js"></script>
+  </body>
+</html>
